@@ -3,25 +3,40 @@
 @section('title', 'Login')
 
 @section('content')
-  <section class="card">
-    <h2>Login</h2>
+  <div class="auth-wrap">
+    <section class="card auth-card">
+      <h2>Login</h2>
+      <p class="muted">Masuk untuk mengelola artikel dan mengakses dashboard.</p>
 
-    <form method="POST" action="{{ url('/login') }}" novalidate>
-      @csrf
+      @if ($errors->any())
+        <div class="error">
+          <ul style="margin:0; padding-left:1.1rem;">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
 
-      <label>Email</label>
-      <input type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+      <form method="POST" action="{{ url('/login') }}" novalidate>
+        @csrf
 
-      <label>Password</label>
-      <input type="password" name="password" required autocomplete="current-password">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-      <label style="display:flex; gap:.5rem; align-items:center;">
-        <input type="checkbox" name="remember"> Remember me
-      </label>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
 
-      <button type="submit">Masuk</button>
-    </form>
+        <label class="check-row" for="remember">
+          <input type="checkbox" id="remember" name="remember"> Remember me
+        </label>
 
-    <p class="muted">Belum punya akun? <a href="{{ route('register') }}">Daftar</a></p>
-  </section>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" style="width:100%;">Masuk</button>
+        </div>
+      </form>
+
+      <p class="auth-footer">Belum punya akun? <a href="{{ route('register') }}">Daftar</a></p>
+    </section>
+  </div>
 @endsection

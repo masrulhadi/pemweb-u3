@@ -2,12 +2,20 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 // Publik
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// To-Do List (Modul IV) — praktikum CRUD
+Route::patch('/tasks/{task}/toggle', [TaskController::class, 'toggleDone'])
+    ->name('tasks.toggle');
+Route::resource('tasks', TaskController::class)->except(['show']);
+Route::resource('categories', CategoryController::class)->except(['show']);
 
 // Hanya tamu (belum login)
 Route::middleware('guest')->group(function () {

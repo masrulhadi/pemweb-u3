@@ -3,67 +3,72 @@
 @section('title', 'Home')
 
 @section('content')
-<section class="card">
-    <h2 style="margin-top: 0;">Portal Berita Sederhana</h2>
-    <p>
-        Selamat datang di portal berita sederhana berbasis Laravel.
-        Berita di bawah ini diambil dari tabel <code>articles</code>.
-    </p>
-
-    @guest
-        <p class="muted">
-            Kamu belum login. Untuk mengelola berita, silakan
-            <a href="{{ route('login') }}">Login</a> atau
-            <a href="{{ route('register') }}">Register</a>.
+<div class="stack">
+    <section class="card hero">
+        <div class="eyebrow">Portal Berita &middot; Laravel</div>
+        <h1>Berita, Ide, dan Cerita yang Terus Tumbuh</h1>
+        <p class="lead">
+            Jelajahi artikel terbaru, baca insight dari para penulis, dan kelola konten Anda dalam satu tempat dengan tampilan yang cepat dan modern.
         </p>
-    @endguest
 
-    @auth
-        <p class="muted">
-            Kamu login sebagai <strong>{{ auth()->user()->name }}</strong>.
-            Kamu dapat menambah berita di menu
-            <a href="{{ route('articles.index') }}">Artikel</a>.
-        </p>
-    @endauth
-</section>
+        @guest
+            <div class="form-actions">
+                <a href="{{ route('register') }}" class="btn btn-primary">Mulai Sekarang</a>
+                <a href="{{ route('login') }}" class="btn btn-secondary">Login</a>
+            </div>
+        @endguest
 
-<section class="card" style="margin-top: 1rem;">
-    <h3>Berita Terbaru</h3>
+        @auth
+            <div class="form-actions">
+                <a href="{{ route('articles.create') }}" class="btn btn-primary">+ Tulis Artikel</a>
+                <a href="{{ route('dashboard') }}" class="btn btn-secondary">Buka Dashboard</a>
+            </div>
+        @endauth
+    </section>
 
-    @if ($articles->isNotEmpty())
-        <div class="row">
-            @foreach ($articles as $article)
-                <article class="card" style="display: flex; flex-direction: column;">
-                    <img src="{{ $article->image_url }}"
-                         alt="Gambar {{ $article->title }}"
-                         style="width: 100%; height: 180px; object-fit: cover;
-                                border-radius: 10px; margin-bottom: .75rem;">
-                    <h4 style="margin: 0 0 .25rem 0;">
-                        <a href="{{ route('articles.show', $article) }}">
-                            {{ $article->title }}
-                        </a>
-                    </h4>
-                    <p class="muted" style="margin: 0 0 .5rem 0;">
-                        Dipublikasikan pada {{ $article->created_at->format('d M Y') }}
-                        oleh {{ $article->user->name }}
-                    </p>
-                    <p style="margin: 0 0 .75rem 0; flex: 1;">
-                        {{ \Illuminate\Support\Str::limit($article->body, 140) }}
-                    </p>
-                    <a href="{{ route('articles.show', $article) }}">
-                        Baca selengkapnya &rarr;
-                    </a>
-                </article>
-            @endforeach
+    <section>
+        <div class="section-head">
+            <div>
+                <h3 class="section-title">Berita Terbaru</h3>
+                <p class="section-sub">Update terkini dari komunitas penulis.</p>
+            </div>
         </div>
-    @else
-        <p class="muted">
-            Belum ada berita yang tersedia.
-            @auth
-                Silakan buat berita baru di menu
-                <a href="{{ route('articles.create') }}">Tambah Artikel</a>.
-            @endauth
-        </p>
-    @endif
-</section>
+
+        @if ($articles->isNotEmpty())
+            <div class="row" style="margin-top:1rem;">
+                @foreach ($articles as $article)
+                    <article class="card article-card">
+                        <img src="{{ $article->image_url }}"
+                             alt="Gambar {{ $article->title }}"
+                             class="article-thumb">
+                        <div class="article-card-body">
+                            <h4 style="margin: 0 0 .3rem 0; font-size: 1.15rem;">
+                                <a href="{{ route('articles.show', $article) }}">
+                                    {{ $article->title }}
+                                </a>
+                            </h4>
+                            <p class="article-meta">
+                                {{ $article->created_at->format('d M Y') }} &middot; {{ $article->user->name }}
+                            </p>
+                            <p class="article-excerpt">
+                                {{ \Illuminate\Support\Str::limit($article->body, 120) }}
+                            </p>
+                            <a href="{{ route('articles.show', $article) }}" class="article-link">
+                                Baca selengkapnya &rarr;
+                            </a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="card empty-state" style="margin-top:1rem;">
+                <p style="margin:0 0 .4rem; font-size:1.05rem; color:#e2e8f0;">Belum ada berita yang tersedia.</p>
+                <p style="margin:0;">Jadilah yang pertama membagikan cerita.</p>
+                @auth
+                    <p style="margin:.9rem 0 0;"><a href="{{ route('articles.create') }}" class="btn btn-primary btn-sm">Tambah Artikel</a></p>
+                @endauth
+            </div>
+        @endif
+    </section>
+</div>
 @endsection

@@ -4,11 +4,11 @@
 
 @section('content')
 <section class="card">
-    <h2 style="margin-top: 0;">Tambah Artikel / Berita</h2>
-    <p class="muted">
-        Isi formulir di bawah untuk menambahkan berita baru. Gambar menggunakan
-        URL (opsional); jika kosong, sistem memakai placeholder online.
-    </p>
+    <div class="page-header">
+        <h2 style="margin:0;">Tambah Artikel / Berita</h2>
+        <a href="{{ route('articles.index') }}" class="btn btn-secondary btn-sm">Kembali</a>
+    </div>
+    <p class="muted">Isi formulir di bawah untuk menambahkan berita baru. Gambar menggunakan URL (opsional).</p>
 
     @if ($errors->any())
         <div class="error">
@@ -25,23 +25,19 @@
         @csrf
 
         <label for="title">Judul Artikel</label>
-        <input type="text" id="title" name="title" value="{{ old('title') }}"
-               required placeholder="Masukkan judul berita">
+        <input type="text" id="title" name="title" value="{{ old('title') }}" required placeholder="Masukkan judul berita">
 
         <label for="image">URL Gambar (opsional)</label>
-        <input type="url" id="image" name="image" value="{{ old('image') }}"
-               placeholder="https://example.com/gambar.jpg">
-        <p class="muted">
-            Jika dikosongkan, sistem memakai gambar placeholder dari
-            <code>picsum.photos</code>.
-        </p>
+        <input type="url" id="image" name="image" value="{{ old('image') }}" placeholder="https://example.com/gambar.jpg">
+        <p class="muted form-hint">Jika dikosongkan, sistem memakai gambar placeholder dari <code>picsum.photos</code>.</p>
 
         <label for="body">Isi Berita</label>
-        <textarea id="body" name="body" rows="8" required
-                  placeholder="Tulis isi berita di sini...">{{ old('body') }}</textarea>
+        <textarea id="body" name="body" rows="10" required placeholder="Tulis isi berita di sini...">{{ old('body') }}</textarea>
 
-        <button type="submit">Simpan Artikel</button>
-        <a href="{{ route('articles.index') }}">Batal</a>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Simpan Artikel</button>
+            <a href="{{ route('articles.index') }}" class="btn btn-secondary">Batal</a>
+        </div>
     </form>
 </section>
 @endsection
